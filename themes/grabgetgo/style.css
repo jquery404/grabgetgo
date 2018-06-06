@@ -1,0 +1,62 @@
+/*
+Theme Name: GrabGetGo
+Theme URI: https://grabgetgo.com/
+Author: jQuery404
+Author URI: https://jquery404.github.io/
+Description: Website for GrabGetGo.
+Version: 1.0
+*/
+
+/* logo */
+.middle-header .logo>img
+{
+	width: 200px;
+	height: auto;
+}
+
+/* CATEGORY */
+.single_top_category {
+    border: 1px solid #ebebeb;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    margin-bottom: 30px;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+.top_category_image {
+    position: relative;
+    z-index: 1;
+    width: 50%;
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 50%;
+    flex: 0 0 50%;
+}
+
+.top_category_image img{
+		height: auto;
+    max-width: 100%;
+}
+
+.top_category_desc {
+    padding: 15px;
+    position: relative;
+    z-index: 1;
+    width: 50%;
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 50%;
+    flex: 0 0 50%;
+}
+
+.top_category_desc h2 {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.ajax_add_to_cart.added {
+    display:none !important;
+}
