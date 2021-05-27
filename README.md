@@ -1,2 +1,2 @@
-# grabgetgo
-online store of grabgetgo
+# grabgetgo (live)
+grabget go live site
