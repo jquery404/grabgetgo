@@ -36,6 +36,9 @@ function init() {
 
 }
 
-
+window.onunload = window.onbeforeunload = () => {
+  socket.close();
+  peer.close();
+};
 
 init();

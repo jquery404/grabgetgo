@@ -48,6 +48,10 @@ function init() {
     });
 }
 
+window.onunload = window.onbeforeunload = () => {
+  socket.close();
+};
+
 function getDevices() {
   return navigator.mediaDevices.enumerateDevices();
 }

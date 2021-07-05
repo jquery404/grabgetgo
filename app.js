@@ -22,14 +22,15 @@ app.use('/js', express.static(__dirname + '/client/assets/js'))
 app.use('/css', express.static(__dirname + '/client/assets/css'))
 app.use('/fonts', express.static(__dirname + '/client/assets/fonts'))
 
-server = app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
-})
-
+// server = app.listen(port, () => {
+//   console.log(`Example app listening at http://localhost:${port}`)
+// })
+const http = require('http');
+const server = http.createServer(app);
 const io = require('socket.io')(server)
-
 var socketServer = io.listen(server);
 
+require('./server/sockets')(io)
 
 var myIceServers = [
   {"url":"stun:stun.l.google.com:19302"},
@@ -37,23 +38,15 @@ var myIceServers = [
   {"url":"stun:stun2.l.google.com:19302"},
   {"url":"stun:stun3.l.google.com:19302"},
   {
-      "url": 'turn:192.158.29.39:3478?transport=udp',
-      "credential": 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
-      "username": '28224511:1379330808'
-      // url: 'turn:numb.viagenie.ca',
-      // credential: 'zx1234',
-      // username: 'jquery404@gmail.com'
+    url: 'turn:numb.viagenie.ca',
+    credential: 'jquery404@gmail.com',
+    username: 'Pot64hook'
+  },
+  {
+    // url: 'turn:numb.viagenie.ca',
+    // credential: 'zx1234',
+    // username: 'jquery404@gmail.com'
   }
-// {
-//   "url":"turn:[ADDRESS]:[PORT]",
-//   "username":"[USERNAME]",
-//   "credential":"[CREDENTIAL]"
-// },
-// {
-//   "url":"turn:[ADDRESS]:[PORT][?transport=tcp]",
-//   "username":"[USERNAME]",
-//   "credential":"[CREDENTIAL]"
-// }
 ];
 easyrtc.setOption("appIceServers", myIceServers);
 easyrtc.setOption("logLevel", "debug");
@@ -70,8 +63,6 @@ easyrtc.events.on("easyrtcAuth", function(socket, easyrtcid, msg, socketCallback
   });
 });
 
-easyrtc.listen(app, socketServer, null, function(err, rtcRef) {
-  console.log("Initiated");
-});
+easyrtc.listen(app, socketServer, null, function(err, rtcRef) { console.log("Initiated"); });
 
-require('./server/sockets')(io)
+server.listen(port, () => console.log(`Server is running on port ${port}`));
