@@ -15,4 +15,13 @@ router.get('/viewer', (req, res) =>{
     res.sendFile(path.join(__dirname, '..', '/client/viewer.html'));
 });
 
+router.get('/xr', (req, res) =>{
+    res.sendFile(path.join(__dirname, '..', '/client/xr/index.html'));
+});
+
+router.get('/collab/:w/:x/:y/:z', (req, res) =>{
+    console.log(req.params.w, req.params.x)
+    res.sendFile(path.join(__dirname, '..', '/client/xr/collab.html'));
+});
+
 module.exports = router
