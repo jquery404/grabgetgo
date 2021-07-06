@@ -8,8 +8,8 @@
 
 
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
-    <script src="../easyrtc/easyrtc.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/easyrtc/easyrtc.js"></script>
     <script src="https://unpkg.com/networked-aframe/dist/networked-aframe.min.js"></script>
     <script src="https://unpkg.com/aframe-randomizer-components@^3.0.1/dist/aframe-randomizer-components.min.js"></script>
     <script src="../jsvr/aframe-ui-widgets.js"></script>
@@ -96,7 +96,7 @@
       </a-entity>
 
       <!-- hand-controls="hand:right" <a-entity id="leftHandController" hand-controls="hand:left" debug-controls="menuID: menuActions" gun="bulletTemplate:#bullet-template" networked="template:#hand-template;"> -->
-      <a-entity id="leftHandController" oculus-touch-controls="hand: left" vive-controls="hand: left" debug-controls="menuID: menuActions" lego-model="legoTemplate:#lego-template" gun="bulletTemplate:#bullet-template" networked="template:#hand-template;attachTemplateToLocal:false;">
+      <a-entity id="leftHandController" laser-controls="hand: left" debug-controls="menuID: menuActions" lego-model="legoTemplate:#lego-template" gun="bulletTemplate:#bullet-template" networked="template:#hand-template;attachTemplateToLocal:false;">
         <a-entity  select-bar="controllerID: leftHandController" id="menuActions" scale="0.7 0.7 0.7" position="0 .1 0" rotation="-85 0 0">
           <optgroup label="Actions" value="actions">
             <option value="goal" src="../img/gfx/icon_goal.png" selected>Goal</option>

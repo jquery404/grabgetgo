@@ -34,6 +34,10 @@ function init() {
         };
     })
 
+    socket.on('connect', () => {
+      socket.emit('watcher');
+    })
+
 }
 
 window.onunload = window.onbeforeunload = () => {

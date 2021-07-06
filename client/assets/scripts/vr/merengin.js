@@ -231,5 +231,9 @@ function GuestInit() {
         };
     })
 
+    socket.on('connect', () => {
+      socket.emit('watcher');
+    })
+
 }
 
