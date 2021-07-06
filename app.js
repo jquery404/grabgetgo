@@ -22,9 +22,6 @@ app.use('/js', express.static(__dirname + '/client/assets/js'))
 app.use('/css', express.static(__dirname + '/client/assets/css'))
 app.use('/fonts', express.static(__dirname + '/client/assets/fonts'))
 
-// server = app.listen(port, () => {
-//   console.log(`Example app listening at http://localhost:${port}`)
-// })
 const http = require('http');
 const server = http.createServer(app);
 const io = require('socket.io')(server)
