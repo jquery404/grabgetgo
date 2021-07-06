@@ -8,7 +8,7 @@ const videoSelect = document.querySelector("select#videoSource");
 
 
 function init() {
-    socket = io()
+    socket = io.connect(window.location.origin, {transports: ['websocket']});
 
     getStream()
     .then(getDevices)
