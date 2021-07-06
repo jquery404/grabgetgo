@@ -4,7 +4,7 @@ const video = document.querySelector("video");
 
 
 function init() {
-    socket = io.connect(window.location.origin, {transports: ['websocket']});
+    socket = io()
 
     socket.on('broadcaster', () => {
         socket.emit('watcher');
