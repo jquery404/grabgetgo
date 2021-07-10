@@ -81,7 +81,7 @@ async function getStream() {
   const audioSource = audioSelect.value;
   const videoSource = videoSelect.value;
   const constraints = {
-    audio: { deviceId: audioSource ? { exact: audioSource } : undefined },
+    audio: { deviceId: audioSource ? { exact: audioSource } : undefined, echoCancellation: true },
     video: { deviceId: videoSource ? { exact: videoSource } : undefined }
   };
   try {
@@ -103,6 +103,7 @@ function gotStream(stream) {
     option => option.text === stream.getVideoTracks()[0].label
   );
   videoElement.srcObject = stream;
+  videoElement.volume = 0
   socket.emit("broadcaster");
 }
 

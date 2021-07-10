@@ -26,6 +26,7 @@ function init() {
             });
         peer.ontrack = event => {
           video.srcObject = event.streams[0];
+          video.volume = 0;
         };
         peer.onicecandidate = event => {
           if (event.candidate) {
@@ -40,7 +41,7 @@ function init() {
 
 }
 
-function enableAudio() {
+function toggleMute() {
   video.muted = video.muted ? false : true;
 }
 
