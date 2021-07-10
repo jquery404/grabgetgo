@@ -40,6 +40,10 @@ function init() {
 
 }
 
+function enableAudio() {
+  video.muted = video.muted ? false : true;
+}
+
 window.onunload = window.onbeforeunload = () => {
   socket.close();
   peer.close();

@@ -22,8 +22,13 @@ app.use('/js', express.static(__dirname + '/client/assets/js'))
 app.use('/css', express.static(__dirname + '/client/assets/css'))
 app.use('/fonts', express.static(__dirname + '/client/assets/fonts'))
 
-const http = require('http');
-const server = http.createServer(app);
+const https = require('https');
+const fs = require('fs')
+const httpsOptions = {
+  key: fs.readFileSync('./cert/cert.key'),
+  cert: fs.readFileSync('./cert/cert.pem')
+}
+const server = https.createServer(httpsOptions, app);
 const io = require('socket.io')(server)
 var socketServer = io.listen(server);
 

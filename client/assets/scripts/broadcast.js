@@ -71,7 +71,7 @@ function gotDevices(deviceInfos) {
   }
 }
 
-function getStream() {
+async function getStream() {
   if (window.stream) {
     window.stream.getTracks().forEach(track => {
       track.stop();
@@ -83,10 +83,14 @@ function getStream() {
     audio: { deviceId: audioSource ? { exact: audioSource } : undefined },
     video: { deviceId: videoSource ? { exact: videoSource } : undefined }
   };
-  return navigator.mediaDevices
-    .getUserMedia(constraints)
-    .then(gotStream)
-    .catch(handleError);
+  try {
+    const stream = await navigator.mediaDevices
+      .getUserMedia(constraints);
+    return gotStream(stream);
+  }
+  catch (error) {
+    return handleError(error);
+  }
 }
 
 function gotStream(stream) {
@@ -103,6 +107,11 @@ function gotStream(stream) {
 
 function handleError(error) {
   console.error("Error: ", error);
+}
+
+
+function toggleMute() {
+  videoElement.muted = videoElement.muted ? false : true;
 }
 
 init() 
