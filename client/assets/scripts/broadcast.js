@@ -5,7 +5,8 @@ const peers = {};
 const videoElement = document.querySelector("video");
 const audioSelect = document.querySelector("select#audioSource");
 const videoSelect = document.querySelector("select#videoSource");
-
+audioSelect.onchange = getStream;
+videoSelect.onchange = getStream;
 
 function init() {
     socket = io()
