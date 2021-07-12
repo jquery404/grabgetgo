@@ -9,43 +9,51 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="/easyrtc/easyrtc.js"></script>
     <script src="scripts/af/networked-aframe@0.8.2.min.js"></script>
-    <script src="../jsvr/af.components.js"></script>
+
+
     <script>
-      AFRAME.registerComponent('change-color-on-hover', {
+        NAF.schemas.getComponentsOriginal = NAF.schemas.getComponents;
+        NAF.schemas.getComponents = (template) => {
+          if (!NAF.schemas.hasTemplate("#avatar-template")) {
+            NAF.schemas.add({
+              template: '#avatar-template',
+               components: [
+                'position',
+                'rotation',
+                {
+                  selector: '.head',
+                  component: 'material',
+                  property: 'color'
+                }
+              ]
+            });
+          }
+          const components = NAF.schemas.getComponentsOriginal(template);
+          return components;
+        }
+        AFRAME.registerComponent('collider-check', {
         dependencies: ['raycaster'],
-        schema: {
-          color: {default: 'red'}
-        },
-    
+
         init: function () {
-          var data = this.data;
-          var el = this.el;  // <a-box>
-          var defaultColor = el.getAttribute('material').color;
+            var data = this.data;
+            var el = this.el;  // <a-box>
 
-          el.addEventListener('raycaster-intersection', function (evt) {
-            //console.log(evt.detail.intersections[0].point);
-            el.setAttribute('color', data.color);
-            console.log('asd');
-          });
+            el.addEventListener('raycaster-intersection', function (evt) {
+                evt.detail.intersections[0].object.material.color = new THREE.Color( 'red' );
+            });
 
-          el.addEventListener('raycaster-intersection-cleared', function () {
-            el.setAttribute('color', defaultColor);
-          });
+            el.addEventListener('raycaster-intersection-cleared', function (evt) {
+                evt.detail.intersections[0].object.material.color = new THREE.Color( 'blue' );
+            });
+        }
+        });
     
-          // el.addEventListener('mouseenter', function () {
-          //   el.setAttribute('color', data.color);
-          // });
-    
-          // el.addEventListener('mouseleave', function () {
-          //   el.setAttribute('color', defaultColor);
-          // });
-        },
-
-      });
     </script>
+
+
   </head>  
   <body>
-    <a-scene merecs-room>
+    <a-scene networked-scene>
       <a-assets>
       
         <img id="grid" src="../img/gfx/grid.png" />
@@ -54,6 +62,8 @@
         <!-- Templates -->
           <a-asset-item id="boy-head-glb" src="../model/curious_boy_head_5.glb"></a-asset-item>
           <a-asset-item id="boy-body-glb" src="../model/curious_boy_body_5.glb"></a-asset-item>
+          <a-asset-item id="girl-head-glb" src="../model/curious_girl_head_5.glb"></a-asset-item>
+          <a-asset-item id="girl-body-glb" src="../model/curious_boy_body_5.glb"></a-asset-item>
           <a-asset-item id="hand-glb" src="../model/hand.glb"></a-asset-item>
           <a-asset-item id="env_arrow" src="../model/env_arrow.obj"></a-asset-item>
   
@@ -86,6 +96,23 @@
         <!-- /Templates -->
       </a-assets> 
 
+      <!-- Avatar selection -->
+      <a-entity id="avatarSelection" scale="0.75 0.75 0.75" position="0 1.6 -2">
+        <a-entity id="selectionText" text="align: center; opacity: 1; width: 6.22; value:Select your avatar; color:#fffdb3;" position="0 -0.5 0"></a-entity>
+        
+        <a-entity id="avatar1" class="avatar" rotation="0 180 0">
+          <a-entity class="head" gltf-model="#boy-head-glb" position="1 0 0" highlighter="color:#ff8"></a-entity>
+          <a-entity class="leftHand" gltf-model="#hand-glb" visible="false"></a-entity>
+          <a-entity class="rightHand" gltf-model="#hand-glb" visible="false"></a-entity>
+        </a-entity>
+
+        <a-entity id="avatar2" class="avatar" rotation="0 180 0">
+          <a-entity class="head" gltf-model="#girl-head-glb" position="0.33 0 0" highlighter="color:#ff0"></a-entity>
+          <a-entity class="leftHand" gltf-model="#hand-glb" visible="false"></a-entity>
+          <a-entity class="rightHand" gltf-model="#hand-glb" visible="false"></a-entity>
+        </a-entity>
+      </a-entity>
+
       <a-entity id="player" networked="template:#player-template;attachTemplateToLocal:false;">
         <a-entity id="playerHead"
           networked="template:#avatar-template;attachTemplateToLocal:false;"
@@ -99,19 +126,13 @@
         </a-entity>
       </a-entity>
 
-      <a-box class="collidable" color="#EF2D5E" position="0 1 -4" change-color-on-hover="color: blue"></a-box>
-      <a-camera><a-entity
-        cursor="fuse: true;"
-        material="color: black; shader: flat"
-        scale=".25 .25 .25"
-        position="0 0 -5"
-        geometry="primitive: ring"></a-entity></a-camera>
-      <a-entity laser-controls="hand: left" raycaster="objects: .collidable; lineColor: red; far: 1000"></a-entity>
+
+      <a-entity class="collidable" geometry="primitive: box" position="0 0 -2"></a-entity>
+      <a-entity collider-check laser-controls="hand: left" raycaster="objects: .collidable; lineColor: red; far: 1000"></a-entity>
       <a-entity laser-controls="hand: right" raycaster="lineColor: orange; far: 1000"></a-entity>
-      <a-sky class="collidable" radius="200" color="#6EBAA7" change-color-on-hover="color: blue"></a-sky>
+      
+      <a-sky radius="200" color="#6EBAA7"></a-sky>
     </a-scene>
 
-
-    <script src="../jsvr/merengin.js"></script>
   </body>
 </html>
