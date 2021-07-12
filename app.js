@@ -39,11 +39,11 @@ var myIceServers = [
   {"url":"stun:stun1.l.google.com:19302"},
   {"url":"stun:stun2.l.google.com:19302"},
   {"url":"stun:stun3.l.google.com:19302"},
-  {
-    url: 'turn:numb.viagenie.ca',
-    credential: 'jquery404@gmail.com',
-    username: 'Pot64hook'
-  },
+  // {
+  //   url: 'turn:numb.viagenie.ca',
+  //   credential: 'jquery404@gmail.com',
+  //   username: 'Pot64hook'
+  // },
   {
     // url: 'turn:numb.viagenie.ca',
     // credential: 'zx1234',

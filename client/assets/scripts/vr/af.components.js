@@ -295,7 +295,10 @@ assert(loopIndex(-2, testLoopArray.length) == 8);
       var painter = this.painter;
   
       if (userData.isSelecting === true) {
-        this.cursor.setFromMatrixPosition(this.hand.object3D.matrixWorld);
+        let matric = this.hand.object3D.matrixWorld;
+        // matric.elements[14] -= 5;
+
+        this.cursor.setFromMatrixPosition(matric);
         painter.lineTo(this.cursor);
         painter.update();
         NAF.connection.broadcastDataGuaranteed("stroke-started", this.hand.object3D.matrixWorld);

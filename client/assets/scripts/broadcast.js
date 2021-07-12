@@ -1,8 +1,10 @@
 let socket;
+let broadcasterStream;
 const peers = {};
 
 // Get camera and microphone
 const videoElement = document.querySelector("video");
+
 const audioSelect = document.querySelector("select#audioSource");
 const videoSelect = document.querySelector("select#videoSource");
 audioSelect.onchange = getStream;
@@ -85,8 +87,7 @@ async function getStream() {
     video: { deviceId: videoSource ? { exact: videoSource } : undefined }
   };
   try {
-    const stream = await navigator.mediaDevices
-      .getUserMedia(constraints);
+    const stream = await navigator.mediaDevices.getUserMedia(constraints);
     return gotStream(stream);
   }
   catch (error) {
@@ -102,8 +103,9 @@ function gotStream(stream) {
   videoSelect.selectedIndex = [...videoSelect.options].findIndex(
     option => option.text === stream.getVideoTracks()[0].label
   );
-  videoElement.srcObject = stream;
+  videoElement.srcObject =  window.stream;
   videoElement.volume = 0
+
   socket.emit("broadcaster");
 }
 
@@ -113,7 +115,15 @@ function handleError(error) {
 
 
 function toggleMute() {
-  videoElement.muted = videoElement.muted ? false : true;
+  var audioTracks = window.stream.getAudioTracks();
+  if (audioTracks.length === 0) {
+    return;
+  }
+  for (var i = 0; i < audioTracks.length; ++i) {
+    audioTracks[i].enabled = !audioTracks[i].enabled;
+  }
+
+  //videoElement.muted = videoElement.muted ? false : true;
 }
 
 init() 

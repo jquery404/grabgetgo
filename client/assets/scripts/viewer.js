@@ -1,7 +1,7 @@
 let socket;
 let peer;
+let broadcasterStream;
 const video = document.querySelector("video");
-
 
 function init() {
     socket = io()
@@ -25,8 +25,8 @@ function init() {
                 socket.emit('answer', id, peer.localDescription);
             });
         peer.ontrack = event => {
-          video.srcObject = event.streams[0];
-          video.volume = 0;
+          window.stream = event.streams[0];
+          video.srcObject = window.stream;
         };
         peer.onicecandidate = event => {
           if (event.candidate) {
@@ -42,7 +42,14 @@ function init() {
 }
 
 function toggleMute() {
-  video.muted = video.muted ? false : true;
+  var audioTracks = window.stream.getAudioTracks();
+  if (audioTracks.length === 0) {
+    return;
+  }
+  for (var i = 0; i < audioTracks.length; ++i) {
+    audioTracks[i].enabled = !audioTracks[i].enabled;
+  }
+  
 }
 
 window.onunload = window.onbeforeunload = () => {

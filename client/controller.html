@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Hello!</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="scripts/af/aframe@1.2.0.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/easyrtc/easyrtc.js"></script>
+    <script src="scripts/af/networked-aframe@0.8.2.min.js"></script>
+    <script src="../jsvr/af.components.js"></script>
+    <script>
+      AFRAME.registerComponent('change-color-on-hover', {
+        dependencies: ['raycaster'],
+        schema: {
+          color: {default: 'red'}
+        },
+    
+        init: function () {
+          var data = this.data;
+          var el = this.el;  // <a-box>
+          var defaultColor = el.getAttribute('material').color;
+
+          el.addEventListener('raycaster-intersection', function (evt) {
+            //console.log(evt.detail.intersections[0].point);
+            el.setAttribute('color', data.color);
+            console.log('asd');
+          });
+
+          el.addEventListener('raycaster-intersection-cleared', function () {
+            el.setAttribute('color', defaultColor);
+          });
+    
+          // el.addEventListener('mouseenter', function () {
+          //   el.setAttribute('color', data.color);
+          // });
+    
+          // el.addEventListener('mouseleave', function () {
+          //   el.setAttribute('color', defaultColor);
+          // });
+        },
+
+      });
+    </script>
+  </head>  
+  <body>
+    <a-scene merecs-room>
+      <a-assets>
+      
+        <img id="grid" src="../img/gfx/grid.png" />
+        <img id="sky" src="../img/gfx/sky.jpg" />
+  
+        <!-- Templates -->
+          <a-asset-item id="boy-head-glb" src="../model/curious_boy_head_5.glb"></a-asset-item>
+          <a-asset-item id="boy-body-glb" src="../model/curious_boy_body_5.glb"></a-asset-item>
+          <a-asset-item id="hand-glb" src="../model/hand.glb"></a-asset-item>
+          <a-asset-item id="env_arrow" src="../model/env_arrow.obj"></a-asset-item>
+  
+          <!-- Player -->
+          <template id="player-template">
+            <a-entity></a-entity>
+          </template>
+  
+          <!-- Avatar -->
+          <template id="avatar-template">
+            <a-entity class="avatar">
+              <a-entity class="nametag" text="value: Hello; align:center;" position="0 0.6 0" rotation="0 180 0" scale="4 4 4"></a-entity>
+              <a-entity class="cartoon" gltf-model="#boy-head-glb" scale="1 1 1"></a-entity>
+            </a-entity>
+          </template>
+  
+          <!-- Body -->
+          <template id="body-template">
+            <a-entity class="cartoon-body" gltf-model="#boy-body-glb" scale="1 1 1"></a-entity>
+          </template>
+  
+  
+          <!-- Hand -->
+          <template id="hand-template">
+            <a-entity>
+              <a-entity class="cartoon-hand" gltf-model="#hand-glb" scale=".3 .3 .3"></a-entity>
+            </a-entity>
+          </template>
+          
+        <!-- /Templates -->
+      </a-assets> 
+
+      <a-entity id="player" networked="template:#player-template;attachTemplateToLocal:false;">
+        <a-entity id="playerHead"
+          networked="template:#avatar-template;attachTemplateToLocal:false;"
+          camera 
+          position="0 1.6 0" 
+          look-controls
+          wasd-controls>
+          <a-entity id="playerBody" body networked="template:#body-template;attachTemplateToLocal:false;"></a-entity>
+          <a-box class="head" visible="false"></a-box>
+          <a-entity class="nametag" visible="false"></a-entity>
+        </a-entity>
+      </a-entity>
+
+      <a-box class="collidable" color="#EF2D5E" position="0 1 -4" change-color-on-hover="color: blue"></a-box>
+      <a-camera><a-entity
+        cursor="fuse: true;"
+        material="color: black; shader: flat"
+        scale=".25 .25 .25"
+        position="0 0 -5"
+        geometry="primitive: ring"></a-entity></a-camera>
+      <a-entity laser-controls="hand: left" raycaster="objects: .collidable; lineColor: red; far: 1000"></a-entity>
+      <a-entity laser-controls="hand: right" line="color: orange"></a-entity>
+      <a-sky class="collidable" radius="200" color="#6EBAA7"></a-sky>
+    </a-scene>
+
+
+    <script src="../jsvr/merengin.js"></script>
+  </body>
+</html>
