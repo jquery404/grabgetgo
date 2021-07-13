@@ -217,18 +217,25 @@ assert(loopIndex(-2, testLoopArray.length) == 8);
   AFRAME.registerComponent('painter', {
 
     schema: {
-      color: {default: 'red', type: 'color'},
-      canDraw: {default: false, type: 'boolean'}
+        color: {
+          default: 'red',
+          type: 'color'
+        }
     },
   
     init: function () {
+      this.el.addEventListener('toggle-paint', function(){console.log("asd")});
       
+      let first = true;
       this.userData = {};
 
       this.initPaint();
 
       this.el.addEventListener('triggerdown', () => {
-        if(!this.data.canDraw) return;
+        if (first) {
+          first = false;   
+          return;
+        }
         
         this.initPaint();
         this.userData.isSelecting = true;
@@ -289,7 +296,7 @@ assert(loopIndex(-2, testLoopArray.length) == 8);
   
       if (userData.isSelecting === true) {
         let matric = this.hand.object3D.matrixWorld;
-        // matric.elements[14] -= 5;
+        matric.elements[14] -= 5;
 
         this.cursor.setFromMatrixPosition(matric);
         painter.lineTo(this.cursor);
@@ -1196,12 +1203,7 @@ assert(loopIndex(-2, testLoopArray.length) == 8);
       var optionValue = menuEl.components['select-bar'].selectedOptionValue;
       console.log(optionValue);
       switch(optionValue){
-        case 'paint': 
-          let rightHandController = document.querySelector('#rightHandController');
-          this.toggle = !this.toggle;
-          rightHandController.setAttribute("painter", {canDraw: this.toggle});
-          this.el.emit("toggle-paint"); 
-        break;
+        case 'paint': this.el.emit("toggle-paint"); break;
         case 'pieces': this.el.emit("lego-pieces"); break;
         case 'goal': this.el.emit("lego-goal"); break;
         case 'shooter': this.el.emit("gun-fire"); break;

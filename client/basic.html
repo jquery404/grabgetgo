@@ -31,6 +31,7 @@
           const components = NAF.schemas.getComponentsOriginal(template);
           return components;
         }
+        
         AFRAME.registerComponent('collider-check', {
         dependencies: ['raycaster'],
 
@@ -39,13 +40,18 @@
             var el = this.el;  // <a-box>
 
             el.addEventListener('raycaster-intersection', function (evt) {
-                evt.detail.intersections[0].object.material.color = new THREE.Color( 'red' );
+              
+              this.raycaster = evt.detail.els;
+              this.raycaster[0].setAttribute('color', 'red');
+                // evt.detail.intersections[0].object.material.color = new THREE.Color( 'red' );
             });
 
             el.addEventListener('raycaster-intersection-cleared', function (evt) {
-                evt.detail.intersections[0].object.material.color = new THREE.Color( 'blue' );
+              this.raycaster[0].setAttribute('color', '#EF2D5E')
+              this.raycaster = null;
+                // evt.detail.intersections[0].object.material.color = new THREE.Color( 'blue' );
             });
-        }
+        },
         });
     
     </script>
@@ -126,9 +132,8 @@
         </a-entity>
       </a-entity>
 
-
-      <a-entity class="collidable" geometry="primitive: box" position="0 0 -2"></a-entity>
-      <a-entity collider-check laser-controls="hand: left" raycaster="objects: .collidable; lineColor: red; far: 1000"></a-entity>
+      <a-box class="collidable" color="#EF2D5E" position="0 0 -2"></a-entity>
+      <a-entity laser-controls="hand: left" collider-check raycaster="objects: .collidable; lineColor: red; far: 1000"></a-entity>
       <a-entity laser-controls="hand: right" raycaster="lineColor: orange; far: 1000"></a-entity>
       
       <a-sky radius="200" color="#6EBAA7"></a-sky>
