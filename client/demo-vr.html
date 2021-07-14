@@ -30,7 +30,9 @@
                 <a-asset-item id="boy-body-glb" src="../model/curious_boy_body_5.glb"></a-asset-item>
                 <a-asset-item id="girl-head-glb" src="../model/curious_girl_head_5.glb"></a-asset-item>
                 <a-asset-item id="girl-body-glb" src="../model/curious_boy_body_5.glb"></a-asset-item>
-                <a-asset-item id="hand-glb" src="../model/hand.glb"></a-asset-item>
+                <a-asset-item id="hand-l-glb" src="../model/hand-left.glb"></a-asset-item>
+                <a-asset-item id="hand-r-glb" src="../model/hand.glb"></a-asset-item>
+                <a-asset-item id="goal-glb" src="../model/goal.glb"></a-asset-item>
                 <a-asset-item id="env_arrow" src="../model/env_arrow.obj"></a-asset-item>
         
                 <!-- Player -->
@@ -53,9 +55,14 @@
         
         
                 <!-- Hand -->
-                <template id="hand-template">
+                <template id="hand-l-template">
                     <a-entity>
-                    <a-entity class="cartoon-hand" gltf-model="#hand-glb" scale=".3 .3 .3"></a-entity>
+                    <a-entity class="cartoon-hand" gltf-model="#hand-l-glb" scale=".3 .3 .3"></a-entity>
+                    </a-entity>
+                </template>
+                <template id="hand-r-template">
+                    <a-entity>
+                    <a-entity class="cartoon-hand" gltf-model="#hand-r-glb" scale=".3 .3 .3"></a-entity>
                     </a-entity>
                 </template>
 
@@ -105,7 +112,7 @@
             </a-entity>
 
 
-            <a-entity id="leftHandController" laser-controls="hand: left" left-hand-controller raycaster="objects: [gui-interactable]; lineColor: red; far: 1000" debug-controls="menuID: menuActions" lego-model="legoTemplate:#lego-template" gun="bulletTemplate:#bullet-template" networked="template:#hand-template;attachTemplateToLocal:false;">
+            <a-entity id="leftHandController" laser-controls="hand: left" left-hand-controller raycaster="objects: [gui-interactable]; lineColor: red; far: 1000" debug-controls="menuID: menuActions" lego-model="legoTemplate:#lego-template" gun="bulletTemplate:#bullet-template" networked="template:#hand-l-template;attachTemplateToLocal:false;">
                 <a-entity select-bar="controllerID: leftHandController" id="menuActions" scale="0.7 0.7 0.7" position="0 .1 0" rotation="-85 0 0">
                     <optgroup label="Actions" value="actions">
                       <option value="goal" src="../img/gfx/icon_goal.png" selected>Goal</option>
@@ -118,7 +125,7 @@
                     </optgroup>
                 </a-entity>
             </a-entity>
-            <a-entity id="rightHandController" laser-controls="hand: right" raycaster="objects: [gui-interactable]; lineColor: black; far: 1000" painter></a-entity>
+            <a-entity id="rightHandController" laser-controls="hand: right" raycaster="objects: [gui-interactable]; lineColor: black; far: 1000" painter networked="template:#hand-r-template;attachTemplateToLocal:false;"></a-entity>
 
         </a-scene>
 
@@ -132,7 +139,7 @@
 
 
         <script src="scripts/rtcconfig.js""></script>
-        <script src="scripts/viewerar.js"></script>
+        <script src="scripts/viewervr.js"></script>
     </body>
 
 </html>

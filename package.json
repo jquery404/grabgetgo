@@ -15,6 +15,7 @@
   "author": "jquery404",
   "license": "ISC",
   "dependencies": {
+    "buffered-interpolation": "^0.2.5",
     "ejs": "^3.1.5",
     "express": "^4.17.1",
     "simple-peer": "^9.7.2",

@@ -77,7 +77,7 @@ assert(loopIndex(-2, testLoopArray.length) == 8);
       
       // Set local user's name
       var myNametag = document.querySelector('.nametag');
-      myNametag.setAttribute('text', 'value', (host?'(HOST)': '') + params.username);
+      myNametag.setAttribute('text', 'value', (host?'(HOST)': '') + params.name);
       
       // Setup networked-scene
       var networkedComp = {
@@ -1687,9 +1687,10 @@ assert(loopIndex(-2, testLoopArray.length) == 8);
       console.log(this.data.isShowing);
 
       if(!this.data.isShowing){
-        var el = document.createElement('a-box');
-        el.setAttribute('scale', '.1 .1 .1');
+        var el = document.createElement('a-entity');
+        el.setAttribute('scale', '.02 .02 .02');
         el.setAttribute('position', '0 .2 0');
+        el.setAttribute('gltf-model', '#goal-glb')
         setTimeout(this.toggleShowing.bind(this), 3 * 1000);
         el.setAttribute('remove-in-seconds', 3);
         this.data.isShowing = true;
