@@ -51,6 +51,7 @@ function toggleMute() {
     audioTracks[i].enabled = !audioTracks[i].enabled;
   }
   
+  document.querySelector('#muteButton').value = document.querySelector('#muteButton').value === 'Unmuted' ? 'Muted' : 'Unmuted';
 }
 
 function adjustVolume(e, val){
