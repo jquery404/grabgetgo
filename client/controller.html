@@ -10,73 +10,75 @@
     <script src="/easyrtc/easyrtc.js"></script>
     <script src="scripts/af/networked-aframe@0.8.2.min.js"></script>
     <script src="../jsvr/ui-raycaster.js"></script>
+    <script src="../jsvr/aframe-gui.js"></script>
     <script src="../jsvr/af.components.js"></script>
     <script>
-      AFRAME.registerComponent('change-color-on-hover', {
-        dependencies: ['raycaster'],
-        schema: {
-          color: {default: 'red'}
-        },
+      // AFRAME.registerComponent('change-color-on-hover', {
+      //   dependencies: ['raycaster'],
+      //   schema: {
+      //     color: {default: 'red'}
+      //   },
     
-        init: function () {
-          var data = this.data;
-          var el = this.el;  // <a-box>
-          var defaultColor = el.getAttribute('material').color;
+      //   init: function () {
+      //     var data = this.data;
+      //     var el = this.el;  // <a-box>
+      //     var defaultColor = el.getAttribute('material').color;
 
-          el.addEventListener('raycaster-intersection', function (evt) {
-            //console.log(evt.detail.intersections[0].point);
-            window.hitObject = el;
-            el.setAttribute('color', data.color);
-          });
+      //     el.addEventListener('raycaster-intersection', function (evt) {
+      //       //console.log(evt.detail.intersections[0].point);
+      //       window.hitObject = el;
+      //       el.setAttribute('color', data.color);
+      //     });
 
-          el.addEventListener('raycaster-intersection-cleared', function () {
-            window.hitObject = null;
-            el.setAttribute('color', defaultColor);
-          });
+      //     el.addEventListener('raycaster-intersection-cleared', function () {
+      //       window.hitObject = null;
+      //       el.setAttribute('color', defaultColor);
+      //     });
     
-          // el.addEventListener('mouseenter', function () {
-          //   el.setAttribute('color', data.color);
-          // });
+      //     // el.addEventListener('mouseenter', function () {
+      //     //   el.setAttribute('color', data.color);
+      //     // });
     
-          // el.addEventListener('mouseleave', function () {
-          //   el.setAttribute('color', defaultColor);
-          // });
-        },
+      //     // el.addEventListener('mouseleave', function () {
+      //     //   el.setAttribute('color', defaultColor);
+      //     // });
+      //   },
 
-      });
+      // });
     
-      AFRAME.registerComponent('left-hand-controller', {
-        init: function(){
-          this.el.addEventListener('triggerdown', this.onTriggerDown);
-          this.el.addEventListener('triggerup', this.onTriggerUp);
-        },
+      // AFRAME.registerComponent('left-hand-controller', {
+      //   init: function(){
+      //     this.el.addEventListener('triggerdown', this.onTriggerDown);
+      //     this.el.addEventListener('triggerup', this.onTriggerUp);
+      //   },
 
-        onTriggerDown: function(e){
-          console.log('left trigger down', e);
-        },
+      //   onTriggerDown: function(e){
+      //     console.log('left trigger down', e);
+      //   },
 
-        onTriggerUp: function(e){
-          console.log('left trigger up');
-        }
-      });
+      //   onTriggerUp: function(e){
+      //     console.log('left trigger up');
+      //   }
+      // });
 
-      AFRAME.registerComponent('right-hand-controller', {
-        init: function(){
-          this.item = this.el;
-          this.el.addEventListener('triggerdown', this.onTriggerDown);
-          this.el.addEventListener('triggerup', this.onTriggerUp);
-        },
+      // AFRAME.registerComponent('right-hand-controller', {
+      //   init: function(){
+      //     this.item = this.el;
+      //     this.el.addEventListener('triggerdown', this.onTriggerDown);
+      //     this.el.addEventListener('triggerup', this.onTriggerUp);
+      //   },
 
-        onTriggerDown: function(e){
-          if(window.hitObject)
-            window.hitObject.setAttribute('scale', '.2 .2 .2')
-        },
+      //   onTriggerDown: function(e){
+      //     if(window.hitObject)
+      //       window.hitObject.setAttribute('scale', '.2 .2 .2')
+      //   },
 
-        onTriggerUp: function(e){
-          if(window.hitObject)
-            window.hitObject.setAttribute('scale', '1 1 1')
-        }
-      });
+      //   onTriggerUp: function(e){
+      //     if(window.hitObject)
+      //       window.hitObject.setAttribute('scale', '1 1 1')
+      //   }
+      // });
+    
     </script>
   </head>  
   <body>
@@ -138,18 +140,72 @@
       
       <a-entity class="head" gltf-model="#boy-head-glb" position="0 2 -4" rotation="0 180 0" highlighter="color:#ff8"></a-entity>
 
-      <a-entity laser-controls="hand: left" left-hand-controller raycaster="objects: .collidable; lineColor: red; far: 1000">
-        <a-box class="collidable" position="-.115 -.05 .1" scale=".1 .1 .02" color="red"></a-box>
-        <a-box class="collidable" position="0 -.05 .1" scale=".1 .1 .02" color="blue"></a-box>
-        <a-box class="collidable" position=".115 -.05 .1" scale=".1 .1 .02" color="pink"></a-box>
-      </a-entity>
-      
-      <a-entity laser-controls="hand: right" right-hand-controller raycaster="objects: .collidable; lineColor: black; far: 1000"></a-entity>
+      <a-gui-flex-container
+        flex-direction="column" justify-content="center" align-items="normal" component-padding="0.1"
+        opacity="0.7" width="3.5" height="4.5" panel-color="#072B73" panel-rounded="0.2"
+        position="-4 2.5 -6" rotation="0 0 0">
+        <a-gui-button
+          id="btn1"
+          width="2.5" 
+          height="0.7" 
+          base-depth="0.05" 
+          depth="0.2"
+          gap="0.1"
+          radius="0"
+          onclick="testButtonAction1"
+          value="test button"
+          font-family="assets/fonts/PermanentMarker-Regular.ttf"
+          font-size="0.35"
+          margin="0 0 0.05 0"
+          toggle="true"
+        ></a-gui-button>
+
+        <a-gui-button
+          width="2.75" 
+          height="1"
+          base-depth="0.1" 
+          depth="0.3"
+          gap="0.1"
+          radius="0"				 
+          onclick="testButtonAction3"
+          value="Example Bevel"
+          font-family="assets/fonts/DiplomataSC-Regular.ttf"
+          font-size="0.25"
+          margin="0 0 0.05 0"
+
+          bevel="true"
+        >
+        </a-gui-button>
+
+        <a-gui-button
+          width="2.5" 
+          height="0.7" 
+          onclick="testButtonAction5"
+          value="Example 5"
+        ></a-gui-button>
+
+        <a-gui-slider
+          width="2.5" height="0.75"
+          onclick="testSliderAction"
+          percent="0.29"
+          margin="0 0 0.05 0"
+        ></a-gui-slider>
+		</a-gui-flex-container>
+
+
+      <a-entity laser-controls="hand: left" left-hand-controller raycaster="objects: .collidable; lineColor: red; far: 1000"></a-entity>
+      <a-entity laser-controls="hand: right" right-hand-controller raycaster="objects: [gui-interactable]; lineColor: black; far: 1000"></a-entity>
       
       <a-sky radius="200" color="#6EBAA7"></a-sky>
     </a-scene>
 
 
     <script src="../jsvr/merengin.js"></script>
+
+    <script>
+      window.testSliderAction = function (evt, value) {
+        console.log(value);
+      }
+    </script>
   </body>
 </html>

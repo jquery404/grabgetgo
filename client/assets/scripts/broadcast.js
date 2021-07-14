@@ -4,9 +4,9 @@ const peers = {};
 
 // Get camera and microphone
 const videoElement = document.querySelector("video");
-
 const audioSelect = document.querySelector("select#audioSource");
 const videoSelect = document.querySelector("select#videoSource");
+
 audioSelect.onchange = getStream;
 videoSelect.onchange = getStream;
 
