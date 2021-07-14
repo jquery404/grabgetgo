@@ -27,6 +27,7 @@ function init() {
         peer.ontrack = event => {
           window.stream = event.streams[0];
           video.srcObject = window.stream;
+          video.play();
         };
         peer.onicecandidate = event => {
           if (event.candidate) {

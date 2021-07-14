@@ -104,6 +104,7 @@ function gotStream(stream) {
   );
   videoElement.srcObject =  window.stream;
   videoElement.volume = 0
+  videoElement.play();
 
   socket.emit("broadcaster");
 }
