@@ -43,6 +43,7 @@ function init() {
 }
 
 function toggleMute() {
+  
   var audioTracks = window.stream.getAudioTracks();
   if (audioTracks.length === 0) {
     return;
@@ -51,22 +52,12 @@ function toggleMute() {
     audioTracks[i].enabled = !audioTracks[i].enabled;
   }
   
-  document.querySelector('#muteButton').value = document.querySelector('#muteButton').value === 'Unmuted' ? 'Muted' : 'Unmuted';
+  video.muted = video.muted ? false : true; 
+  document.querySelector('#muteButton').innerHTML = document.querySelector('#muteButton').innerHTML === 'Unmute' ? 'Mute' : 'Unmute';
 }
 
 function adjustVolume(e, val){
-  console.log(val.toFixed(1));
-  if(val > 0) toggleMute();
-  else toggleMute();
-
-  var audioTracks = window.stream.getAudioTracks();
-  if (audioTracks.length === 0) {
-    return;
-  }
-  for (var i = 0; i < audioTracks.length; ++i) {
-    audioTracks[i].volume = val.toFixed(1);
-  }
-  
+  video.volume = val.toFixed(1);
 }
 
 window.onunload = window.onbeforeunload = () => {

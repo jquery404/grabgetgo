@@ -122,14 +122,12 @@ function toggleMute() {
   for (var i = 0; i < audioTracks.length; ++i) {
     audioTracks[i].enabled = !audioTracks[i].enabled;
   }
-  document.querySelector('#muteButton').value = videoElement.muted ? 'Muted' : 'Unmuted';
+  videoElement.muted = videoElement.muted ? false : true; 
+  document.querySelector('#muteButton').innerHTML = document.querySelector('#muteButton').innerHTML === 'Unmute' ? 'Mute' : 'Unmute';
 }
 
 function adjustVolume(e, val){
-  // console.log(val.toFixed(1));
-  // if(val > 0) videoElement.muted = false;
-  // else videoElement.muted = true;
-  // videoElement.volume = val.toFixed(1);
+  videoElement.volume = val.toFixed(1);
 }
 
 init() 
