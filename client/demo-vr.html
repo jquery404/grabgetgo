@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="utf-8">
+        <title>MXRC</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+        <script src="scripts/af/aframe@1.2.0.min.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="/easyrtc/easyrtc.js"></script>
+        <script src="scripts/af/networked-aframe@0.8.2.min.js"></script>
+        <script src="../jsvr/aframe-gui.js"></script>
+        <script src="../jsvr/TubePainter.js"></script>
+        <script src="../jsvr/af.components.js"></script>
+        <script src="../jsvr/demo-vr.js"></script>
+    </head>
+
+    <body>
+
+        <a-scene merecs-room>
+            <a-assets>
+            
+              <img id="grid" src="../img/gfx/grid.png" />
+              <img id="sky" src="../img/gfx/sky.jpg" />
+
+                <!-- Templates -->
+                <a-asset-item id="boy-head-glb" src="../model/curious_boy_head_5.glb"></a-asset-item>
+                <a-asset-item id="boy-body-glb" src="../model/curious_boy_body_5.glb"></a-asset-item>
+                <a-asset-item id="girl-head-glb" src="../model/curious_girl_head_5.glb"></a-asset-item>
+                <a-asset-item id="girl-body-glb" src="../model/curious_boy_body_5.glb"></a-asset-item>
+                <a-asset-item id="hand-glb" src="../model/hand.glb"></a-asset-item>
+                <a-asset-item id="env_arrow" src="../model/env_arrow.obj"></a-asset-item>
+        
+                <!-- Player -->
+                <template id="player-template">
+                    <a-entity></a-entity>
+                </template>
+        
+                <!-- Avatar -->
+                <template id="avatar-template">
+                    <a-entity class="avatar">
+                    <a-entity class="nametag" text="value: Hello; align:center;" position="0 0.6 0" rotation="0 180 0" scale="4 4 4"></a-entity>
+                    <a-entity class="cartoon" gltf-model="#boy-head-glb" scale="1 1 1"></a-entity>
+                    </a-entity>
+                </template>
+        
+                <!-- Body -->
+                <template id="body-template">
+                    <a-entity class="cartoon-body" gltf-model="#boy-body-glb" scale="1 1 1"></a-entity>
+                </template>
+        
+        
+                <!-- Hand -->
+                <template id="hand-template">
+                    <a-entity>
+                    <a-entity class="cartoon-hand" gltf-model="#hand-glb" scale=".3 .3 .3"></a-entity>
+                    </a-entity>
+                </template>
+
+                <!-- Bullet -->
+                <template id="bullet-template">
+                    <a-entity>
+                    <a-sphere class="bullet" scale="0.1 0.1 0.1" color="#fff"></a-sphere>
+                    </a-entity>
+                </template>
+              
+            </a-assets> 
+      
+            <a-entity grid="src: #grid; env-map: #sky"></a-entity>
+            <a-sky src="#hostVideo" rotation="0 -90 0"></a-sky>
+
+            <a-gui-flex-container
+                flex-direction="column" justify-content="center" align-items="normal" component-padding="0.1"
+                opacity="0.7" width="3.5" height="4.5" panel-color="#072B73" panel-rounded="0.2"
+                position="-4 2.5 -6" rotation="0 0 0">
+                
+                <a-gui-button 
+                    id="btnMute" width="2.5" height="0.7" 
+                    base-depth="0.05" depth="0.2" gap="0.1" 
+                    radius="0" onclick="toggleMute" value="MUTE" 
+                    font-size="0.35" margin="0 0 0.05 0" toggle="true">
+                </a-gui-button>
+
+                <a-gui-slider
+                    width="2.5" height="0.75"
+                    onclick="adjustVolume"
+                    percent="0.0"
+                    margin="0 0 0.05 0">
+                </a-gui-slider>
+		    </a-gui-flex-container>
+
+            <a-entity id="player" networked="template:#player-template;attachTemplateToLocal:false;">
+                <a-entity id="playerHead"
+                  networked="template:#avatar-template;attachTemplateToLocal:false;"
+                  camera 
+                  position="0 1.6 0" 
+                  look-controls
+                  wasd-controls>
+                  <a-entity id="playerBody" body networked="template:#body-template;attachTemplateToLocal:false;"></a-entity>
+                  <a-box class="head" visible="false"></a-box>
+                  <a-entity class="nametag" visible="false"></a-entity>
+                </a-entity>
+            </a-entity>
+
+
+            <a-entity id="leftHandController" laser-controls="hand: left" left-hand-controller raycaster="objects: [gui-interactable]; lineColor: red; far: 1000" debug-controls="menuID: menuActions" lego-model="legoTemplate:#lego-template" gun="bulletTemplate:#bullet-template" networked="template:#hand-template;attachTemplateToLocal:false;">
+                <a-entity select-bar="controllerID: leftHandController" id="menuActions" scale="0.7 0.7 0.7" position="0 .1 0" rotation="-85 0 0">
+                    <optgroup label="Actions" value="actions">
+                      <option value="goal" src="../img/gfx/icon_goal.png" selected>Goal</option>
+                      <option value="pieces" src="../img/gfx/icon_pieces.png">Pieces</option>
+                      <option value="saveAs" src="../img/gfx/icon_saveAs.png">Save As Copy</option>
+                      <option value="new" src="../img/gfx/icon_new.png">New</option>
+                      <option value="erase" src="../img/gfx/icon_erase.png">Erase</option>
+                      <option value="paint" src="../img/gfx/icon_paint.png">Paint</option>
+                      <option value="shooter" src="../img/gfx/gun_shot.png">Shooter</option>
+                    </optgroup>
+                </a-entity>
+            </a-entity>
+            <a-entity id="rightHandController" laser-controls="hand: right" raycaster="objects: [gui-interactable]; lineColor: black; far: 1000" painter></a-entity>
+
+        </a-scene>
+
+        <div class="videoSetting">
+            <video id="hostVideo" playsinline autoplay muted></video>
+
+            <div style="display:block">
+                <button id="muteButton" class="settings" onclick="toggleMute()">Unmute</button>
+            </div>
+        </div>
+
+
+        <script src="scripts/rtcconfig.js""></script>
+        <script src="scripts/viewerar.js"></script>
+    </body>
+
+</html>
