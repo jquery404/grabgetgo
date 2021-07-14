@@ -1205,6 +1205,7 @@ assert(loopIndex(-2, testLoopArray.length) == 8);
         case 'pieces': this.el.emit("lego-pieces"); break;
         case 'goal': this.el.emit("lego-goal"); break;
         case 'shooter': this.el.emit("gun-fire"); break;
+        case 'question': let ques = document.querySelector('#questionnaires').getAttribute('visible') ? 'false' : 'true'; document.querySelector('#questionnaires').setAttribute('visible', ques); break;
         default: break;
       }
   

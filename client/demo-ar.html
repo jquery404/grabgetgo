@@ -98,6 +98,16 @@
                 </a-gui-slider>
 		    </a-gui-flex-container>
 
+            <!-- question -->
+            <a-entity id="questionnaires" visible="false" questions color="white" position="0 0 -5" geometry="primitive: plane; width: 4; height: 3" material="color: #333333; shader: flat; transparent: false">
+                <a-box id="progressbar" color="red" scale="4 .1 .1" position="0 1.4 0"></a-box>
+                <a-text id="quiz"  value="loading..." align="center" width="4" scale="1 1 1" position="0 1 0"></a-text>
+                <a-text id="answerLbl" wrap-count="10" value="1" align="center"></a-text>
+                
+                <a-gui-button id="btnPrev" width=".5" height="0.5" onclick="testButtonAction5" value="Prev" position="-2 0 0"></a-gui-button>
+                <a-gui-button id="btnNext" width=".5" height="0.5" onclick="testButtonAction5" value="Next" position="2 0 0"></a-gui-button>
+            </a-entity>
+
             <a-entity id="player" networked="template:#player-template;attachTemplateToLocal:false;">
                 <a-entity id="playerHead"
                   networked="template:#avatar-template;attachTemplateToLocal:false;"
@@ -118,7 +128,7 @@
                       <option value="goal" src="../img/gfx/icon_goal.png" selected>Goal</option>
                       <option value="pieces" src="../img/gfx/icon_pieces.png">Pieces</option>
                       <option value="saveAs" src="../img/gfx/icon_saveAs.png">Save As Copy</option>
-                      <option value="new" src="../img/gfx/icon_new.png">New</option>
+                      <option value="question" src="../img/gfx/icon_new.png">Question</option>
                       <option value="erase" src="../img/gfx/icon_erase.png">Erase</option>
                       <option value="paint" src="../img/gfx/icon_paint.png">Paint</option>
                       <option value="shooter" src="../img/gfx/gun_shot.png">Shooter</option>
@@ -126,6 +136,8 @@
                 </a-entity>
             </a-entity>
             <a-entity id="rightHandController" laser-controls="hand: right" raycaster="objects: [gui-interactable]; lineColor: black; far: 1000" painter networked="template:#hand-r-template;attachTemplateToLocal:false;"></a-entity>
+
+
 
         </a-scene>
 
@@ -149,7 +161,7 @@
         </div>
 
 
-        <script src="scripts/rtcconfig.js""></script>
+        <script src="scripts/rtcconfig.js"></script>
         <script src="scripts/broadcastar.js"></script>
     </body>
 

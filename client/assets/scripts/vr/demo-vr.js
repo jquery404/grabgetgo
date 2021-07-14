@@ -12,3 +12,9 @@ NAF.schemas.getComponents = (template) => {
     const components = NAF.schemas.getComponentsOriginal(template);
     return components;
 }
+
+function onConnect () {
+    fetch('../data/questionlist.json')
+      .then(res => { return res.json() })
+      .then(data => {questionList = data; console.log(questionList); })
+}
