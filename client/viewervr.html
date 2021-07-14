@@ -13,8 +13,6 @@
     </head>
 
     <body>
-        
-        
 
         <a-scene>
             <a-assets>
@@ -45,37 +43,25 @@
                     percent="0.0"
                     margin="0 0 0.05 0">
                 </a-gui-slider>
-		</a-gui-flex-container>
+		    </a-gui-flex-container>
 
 
-        <a-entity laser-controls="hand: left" left-hand-controller raycaster="objects: [gui-interactable]; lineColor: red; far: 1000"></a-entity>
-        <a-entity laser-controls="hand: right" right-hand-controller raycaster="objects: [gui-interactable]; lineColor: black; far: 1000"></a-entity>
-
+            <a-entity laser-controls="hand: left" left-hand-controller raycaster="objects: [gui-interactable]; lineColor: red; far: 1000"></a-entity>
+            <a-entity laser-controls="hand: right" right-hand-controller raycaster="objects: [gui-interactable]; lineColor: black; far: 1000"></a-entity>
 
         </a-scene>
 
         <div class="videoSetting">
-            <section class="select">
-                <label for="audioSource">Audio source: </label>
-                <select id="audioSource"></select>
-            </section>
-        
-            <section class="select">
-                <label for="videoSource">Video source: </label>
-                <select id="videoSource"></select>
-            </section>
-
             <video id="hostVideo" playsinline autoplay muted></video>
 
             <div style="display:block">
                 <button id="muteButton" class="settings" onclick="toggleMute()">Unmuted</button>
-                <button id="vidButton" class="settings" onclick="toggleVid()">Video Enabled</button>
             </div>
         </div>
 
-
+        
         <script src="scripts/rtcconfig.js""></script>
-        <script src="scripts/broadcastvr.js"></script>
+        <script src="scripts/viewervr.js"></script>
     </body>
 
 </html>
