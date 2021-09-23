@@ -42,20 +42,14 @@
     {
         "qus":"How real did the virtual world seem to you?",
         "cat":"spatial presence",
-        "scl":[
-            "about as real as an imagined world",
-            "indistinguishable from the real world"
-        ]
+        "scl":["about as real as an imagined world", "indistinguishable from the real world"]
     },
     {
         "qus":"How much did your experience in the virtual environment seem consistent with your real world experience?",
         "cat":"spatial presence",
-        "scl":[
-            "not consistent", "inconsistent", "somewhat inconsistent", "neither consistent nor inconsistent", 
-            "somewhat consistent", "consistent", "very consistent"
-        ]
+        "scl":["not consistent", "inconsistent", "somewhat inconsistent", "neither consistent nor inconsistent", "somewhat consistent", "consistent", "very consistent"]
     },
-
+    
     {
         "qus": "The other individual paid close attention to me",
         "cat": "social presence",
@@ -166,62 +160,6 @@
         "qus": "It was just like being face to face with my partner ",
         "cat": "copresence",
         "scl": ["not at all", "very much"]
-    },
-
-    {
-        "qus": "How mentally demanding was the task?",
-        "cat": "workload",
-        "scl": ["low", "high"]
-    },
-    {
-        "qus": "How physically demanding was the task?",
-        "cat": "workload",
-        "scl": ["low", "high"]
-    },
-    {
-        "qus": "How hurried or rushed was the pace of the task?",
-        "cat": "workload",
-        "scl": ["low", "high"]
-    },
-    {
-        "qus": "How successful were you in accomplishing what you were asked to do?",
-        "cat": "workload",
-        "scl": ["low", "high"]
-    },
-    {
-        "qus": "How hard did you have to work to accomplish your level of performance?",
-        "cat": "workload",
-        "scl": ["low", "high"]
-    },
-    {
-        "qus": "How insecure, discouraged, irritated, stressed, and annoyed were you?",
-        "cat": "workload",
-        "scl": ["low", "high"]
-    },
-    {
-        "qus": "I think that I would like to use this system frequently",
-        "cat": "easiness",
-        "scl": ["low", "high"]
-    },
-    {
-        "qus": "I found the system unnecessarily complex",
-        "cat": "easiness",
-        "scl": ["low", "high"]
-    },
-    {
-        "qus": "I thought the system was easy to use",
-        "cat": "easiness",
-        "scl": ["low", "high"]
-    },
-    {
-        "qus": "I think that I would need the support of a technical person to be able to use this system",
-        "cat": "easiness",
-        "scl": ["low", "high"]
-    },
-    {
-        "qus": "I needed to learn a lot of things before I could get going with this system",
-        "cat": "easiness",
-        "scl": ["low", "high"]
     }
 
 ]

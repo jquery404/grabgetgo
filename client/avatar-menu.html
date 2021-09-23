@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Hello!</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="scripts/af/aframe@1.2.0.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/easyrtc/easyrtc.js"></script>
+    <script src="scripts/af/networked-aframe@0.8.2.min.js"></script>
+
+
+    <script>
+        
+        AFRAME.registerComponent('collider-check', {
+        dependencies: ['raycaster'],
+
+        init: function () {
+            var data = this.data;
+            var el = this.el;  // <a-box>
+
+            el.addEventListener('raycaster-intersection', function (evt) {
+              
+              this.raycaster = evt.detail.els;
+              this.raycaster[0].setAttribute('color', 'red');
+                // evt.detail.intersections[0].object.material.color = new THREE.Color( 'red' );
+            });
+
+            el.addEventListener('raycaster-intersection-cleared', function (evt) {
+              this.raycaster[0].setAttribute('color', '#EF2D5E')
+              this.raycaster = null;
+                // evt.detail.intersections[0].object.material.color = new THREE.Color( 'blue' );
+            });
+        },
+        });
+    
+        AFRAME.registerComponent('cursor-listener', {
+          init: function () {
+            var lastIndex = -1;
+            
+            this.el.addEventListener('mouseenter', function (evt) {
+              this.setAttribute('scale', '1.5 1.5 1.5');
+            });
+
+            this.el.addEventListener('mouseleave', function (evt) {
+              this.setAttribute('scale', '1 1 1');
+            });
+          }
+        });
+    
+    </script>
+
+
+  </head>  
+  <body>
+    <a-scene networked-scene>
+      <a-assets>
+      
+        <img id="grid" src="../img/gfx/grid.png" />
+        <img id="sky" src="../img/gfx/sky.jpg" />
+  
+        <!-- Templates -->
+          <a-asset-item id="boy-head-glb" src="../model/curious_boy_head_5.glb"></a-asset-item>
+          <a-asset-item id="boy-body-glb" src="../model/curious_boy_body_5.glb"></a-asset-item>
+          <a-asset-item id="girl-head-glb" src="../model/curious_girl_head_5.glb"></a-asset-item>
+          <a-asset-item id="girl-body-glb" src="../model/curious_boy_body_5.glb"></a-asset-item>
+        <!-- /Templates -->
+      </a-assets> 
+
+      <!-- Avatar selection -->
+      <a-entity id="avatarSelection" scale="0.75 0.75 0.75" position="0 1.6 -2">
+        <a-entity id="selectionText" text="align: center; opacity: 1; width: 6.22; value:Select your avatar; color:#fffdb3;" position="0 -0.5 0"></a-entity>
+        
+        <a-entity id="avatar1" class="avatar" rotation="0 180 0">
+          <a-entity class="head" cursor-listener gltf-model="#boy-head-glb" position="1 0 0" highlighter="color:#ff8"></a-entity>
+        </a-entity>
+
+        <a-entity id="avatar2" class="avatar" rotation="0 180 0">
+          <a-entity class="head" cursor-listener gltf-model="#girl-head-glb" position="0.33 0 0" highlighter="color:#ff0"></a-entity>
+        </a-entity>
+
+        <a-entity id="avatar3" class="avatar" rotation="0 180 0">
+          <a-entity class="head" cursor-listener gltf-model="#girl-head-glb" position="-0.34 0 0" highlighter="color:#ff0"></a-entity>
+        </a-entity>
+
+        <a-entity id="avatar4" class="avatar" rotation="0 180 0">
+          <a-entity class="head" cursor-listener gltf-model="#boy-head-glb" position="-1 0 0" highlighter="color:#ff0"></a-entity>
+        </a-entity>
+      </a-entity>
+
+      <a-entity camera look-controls position="0 1.6 0">
+        <a-entity cursor="fuse: true; fuseTimeout: 500"
+                  position="0 0 -1"
+                  geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
+                  material="color: black; shader: flat">
+        </a-entity>
+      </a-entity>
+
+      <a-entity laser-controls="hand: left" collider-check raycaster="objects: .collidable; lineColor: red; far: 1000"></a-entity>
+      <a-entity laser-controls="hand: right" raycaster="lineColor: orange; far: 1000"></a-entity>
+      
+      <a-sky radius="200" color="#6EBAA7"></a-sky>
+    </a-scene>
+
+  </body>
+</html>

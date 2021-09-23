@@ -130,4 +130,30 @@ function adjustVolume(e, val){
   videoElement.volume = val.toFixed(1);
 }
 
+function adjustAnswer(e, val){
+  let choiceEl;
+  let progressEl = document.getElementById("progressbar");
+  progressEl.setAttribute('progress', .6);
+
+  for (let i = 1; i < 8; i++) {
+    if (i==Math.floor(7*val)) {
+      choiceEl = document.querySelector(".choice-"+ Math.floor(7*val))
+      choiceEl.setAttribute('width', 10);
+    } else {
+      choiceEl = document.querySelector(".choice-"+ i)
+      choiceEl.setAttribute('width', 5);
+    }
+  }
+}
+
+function btnQusPrev(e, val){
+  let quesEl = document.getElementById("questionnaires");
+  quesEl.setAttribute("questions", "flash: prev"+Math.random());
+}
+
+function btnQusNext(e, val){
+  let quesEl = document.getElementById("questionnaires");
+  quesEl.setAttribute("questions", "flash: next"+Math.random());
+}
+
 init() 

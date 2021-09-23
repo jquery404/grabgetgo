@@ -1618,6 +1618,7 @@ assert(loopIndex(-2, testLoopArray.length) == 8);
       answerLblID: {type: 'string', default: 'answerLbl'},
       btnPrevID: {type: 'string', default: 'btnPrev'},
       btnNextID: {type: 'string', default: 'btnNext'},
+      flash: {type: 'string', default: 'fl'},
     },
 
     init: function () {
@@ -1626,25 +1627,25 @@ assert(loopIndex(-2, testLoopArray.length) == 8);
 
       this.quizEl = document.getElementById(this.data.quizID);
       this.progressbarEl = document.getElementById(this.data.progressbarID);
-      this.answerLabelEl = document.getElementById(this.data.answerLblID);
+      this.answerLabelXEl = document.getElementById(this.data.answerLblID+"X");
+      this.answerLabelYEl = document.getElementById(this.data.answerLblID+"Y");
       this.btnPrevEl = document.getElementById(this.data.btnPrevID);
       this.btnNextEl = document.getElementById(this.data.btnNextID);
 
-      this.btnPrevEl.addEventListener('pressed', self.onClickPrev.bind(this));
-      this.btnNextEl.addEventListener('pressed', self.onClickNext.bind(this));
+      this.el.addEventListener('pressed-left', self.onClickPrev.bind(this));
+      this.el.addEventListener('pressed-right', self.onClickNext.bind(this));
 
       setTimeout(this.showNewQuestion.bind(this), 3 * 1000);
     },
 
     showNewQuestion: function(){
-      let proBarWidth = (this.qIndex/questionList.length);
-      let proBarPosition = (1- proBarWidth) /2;
-      
-      this.progressbarEl.setAttribute('position', -1*proBarPosition+' 1.4 0');
-      this.progressbarEl.setAttribute('scale', proBarWidth + ' .1 .1');
+      let progressEl = document.getElementById("progressbar");
+      let curQus = questionList[this.qIndex];
+      progressEl.setAttribute('progress', (this.qIndex/questionList.length).toFixed(2));
       
       this.quizEl.setAttribute('value', questionList[this.qIndex].qus);
-      this.answerLabelEl.setAttribute('value', '...');
+      this.answerLabelXEl.setAttribute('value', curQus.scl[0]);
+      this.answerLabelYEl.setAttribute('value', curQus.scl[curQus.scl.length-1]);
     },
 
     onClickPrev: function(){
@@ -1661,13 +1662,11 @@ assert(loopIndex(-2, testLoopArray.length) == 8);
       var data = this.data;
       var el = this.el;
 
-      // btnSlider.addEventListener('change', function (e) {
-      //   let sliderVal = Math.floor(e.detail.value*7);
-      //   sliderVal = sliderVal < 0 ? 0 : sliderVal
-      //   lblSlider.setAttribute('value', questionList[qIndex].scl[sliderVal]);
-      // });
-
-      
+      if (data.flash.includes('next')) {
+        this.onClickNext()
+      } else if (data.flash.includes('prev')) {
+        this.onClickPrev()
+      }
     }
 
   });

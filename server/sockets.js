@@ -1,5 +1,6 @@
 peers = {}
 let broadcaster;
+let audioBroadcaster;
 
 module.exports = (io) => {
     io.on('connect', (socket) => {
@@ -48,7 +49,7 @@ module.exports = (io) => {
         // broadcasting
         socket.on('broadcaster', () => {
             broadcaster = socket.id;
-            console.log(broadcaster)
+            console.log('broadcaster', broadcaster)
             socket.broadcast.emit('broadcaster');
         })
 
@@ -76,6 +77,17 @@ module.exports = (io) => {
             socket.to(broadcaster).emit('disconnectPeer', socket.id);
         })
 
+        // ...............  ................   ..................   ................
+        socket.on('audio-broadcaster', () => {
+            audioBroadcaster = socket.id;
+            console.log('==.', audioBroadcaster);
+            socket.broadcast.emit('audio-broadcaster');
+        })
+
+        socket.on('audio-watcher', () => {
+            console.log('==', socket.id, audioBroadcaster);
+            socket.to(audioBroadcaster).emit('audio-watcher', socket.id);
+        })
 
 
 

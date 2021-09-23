@@ -215,7 +215,7 @@ AFRAME.registerComponent('gui-button', {
             gap: {type: 'number', default: 0.025},
             radius: {type: 'number', default: 0},
             margin: { type: 'vec4', default: {x: 0, y: 0, z: 0, w: 0}},
-             bevelEnabled: {type: 'boolean', default: true},
+            bevelEnabled: {type: 'boolean', default: true},
             bevelSegments: {type: 'number', default: 5},
             steps: {type: 'number', default: 2},
             bevelSize: {type: 'number', default: 4},
@@ -1990,7 +1990,8 @@ AFRAME.registerComponent('gui-label', {
     fontColor: { type: 'string', default: key_grey_dark },
     backgroundColor: { type: 'string', default: key_offwhite },
     opacity: { type: 'number', default: 1.0 },
-    textDepth: { type: 'number', default: 0.01 }
+    textDepth: { type: 'number', default: 0.01 },
+    position: { type: 'vec3', default: { x: 0, y: 0, z: 0 } },
   },
   init: function init() {
     var data = this.data;
@@ -1999,23 +2000,16 @@ AFRAME.registerComponent('gui-label', {
     this.guiItem = guiItem;
 
     el.setAttribute('geometry', 'primitive: plane; height: ' + guiItem.height + '; width: ' + guiItem.width + ';');
-    el.setAttribute('material', 'shader: flat; side:front; color:' + data.backgroundColor + '; transparent: true; opacity: ' + data.opacity + '; alphaTest: 0.5;');
+    el.setAttribute('material', 'shader: flat; side:front; color:' + data.backgroundColor + '; transparent: false; opacity: ' + data.opacity + '; alphaTest: 0.5;');
+    
 
     //fallback for old font-sizing
     if (data.fontSize > 20) {
-      // 150/750
       var newSize = data.fontSize / 750;
       data.fontSize = newSize;
     }
 
     this.setText(data.value);
-
-    ////WAI ARIA Support
-
-    // if(data.labelFor){
-    //   // el.setAttribute('role', 'button');
-    // }
-
   },
   update: function update(oldData) {
     var data = this.data;
@@ -2035,9 +2029,8 @@ AFRAME.registerComponent('gui-label', {
   setText: function setText(newText) {
     var textEntity = document.createElement("a-entity");
     this.textEntity = textEntity;
-    textEntity.setAttribute('troika-text', 'value: ' + newText + '; \n                                                align: ' + this.data.align + '; \n                                                anchor: ' + this.data.anchor + '; \n                                                baseline:center;\n                                                letterSpacing:0;\n                                                lineHeight: ' + this.data.lineHeight + ';\n                                                color:' + this.data.fontColor + ';\n                                                font:' + this.data.fontFamily + ';\n                                                fontSize:' + this.data.fontSize + ';\n                                                depthOffset:1;\n                                                maxWidth:' + this.guiItem.width / 1.05 + ';\n                                                ');
+    textEntity.setAttribute('troika-text', 'value: ' + newText + '; \n align: ' + this.data.align + '; \n anchor: ' + this.data.anchor + '; \n baseline:center;\n font:' + this.data.fontFamily + ';\n fontSize:' + this.data.fontSize + ';\n depthOffset:1;\n maxWidth:' + this.guiItem.width / 1.05 + ';\n ');
     textEntity.setAttribute('position', '0 0 ' + this.data.textDepth);
-    //        textEntity.setAttribute('troika-text-material', `shader: flat;`);
     this.el.appendChild(textEntity);
   }
 });
@@ -2061,7 +2054,7 @@ AFRAME.registerPrimitive('a-gui-label', {
     'font-family': 'gui-label.fontFamily',
     'background-color': 'gui-label.backgroundColor',
     'opacity': 'gui-label.opacity',
-    'text-depth': 'gui-label.textDepth'
+    'position': 'gui-label.position'
   }
 });
 
@@ -2075,7 +2068,8 @@ AFRAME.registerPrimitive('a-gui-label', {
 AFRAME.registerComponent('gui-progressbar', {
     schema: {
         backgroundColor: { type: 'string', default: key_grey },
-        activeColor: { type: 'string', default: key_orange }
+        activeColor: { type: 'string', default: key_orange },
+        progress: { type: 'number', default: .1 }
     },
     init: function init() {
 
@@ -2087,11 +2081,13 @@ AFRAME.registerComponent('gui-progressbar', {
         el.setAttribute('material', 'shader: flat; opacity: 1;  color: ' + data.backgroundColor + '; side:front;');
 
         var progressMeter = document.createElement("a-entity");
-        progressMeter.setAttribute('geometry', 'primitive: box; width: 0.04; height: ' + guiItem.height + '; depth: 0.02;');
+        var progressMeterWidth = data.progress * guiItem.width;
+        progressMeter.setAttribute('geometry', 'primitive: box; width: ' + progressMeterWidth + '; height: ' + guiItem.height + '; depth: 0.02;');
         progressMeter.setAttribute('material', 'shader: flat; opacity: 1; side:double; color: ' + data.activeColor);
-        progressMeter.setAttribute('position', -guiItem.width / 2 + ' 0 0.01');
+        progressMeter.setAttribute('position', -(guiItem.width-progressMeterWidth) / 2 + ' 0 0.01');
         progressMeter.id = "progress_meter";
         el.appendChild(progressMeter);
+        this.progressMeter = progressMeter;
 
         // <a-entity id="progress_meter"
         //           geometry="primitive: box; width: 0.04; height: 0.3; depth: 0.004;"
@@ -2099,7 +2095,14 @@ AFRAME.registerComponent('gui-progressbar', {
         //             position="-1.23  0 0.0">
         // </a-entity>
     },
-    update: function update() {},
+    update: function update() {
+      var data = this.data;
+      var el = this.el;
+      var guiItem = el.getAttribute("gui-item");
+      var progressMeterWidth = data.progress * guiItem.width;
+      this.progressMeter.setAttribute('geometry', 'primitive: box; width: ' + progressMeterWidth + '; height: ' + guiItem.height + '; depth: 0.02;');
+      this.progressMeter.setAttribute('position', -(guiItem.width-progressMeterWidth) / 2 + ' 0 0.01');
+    },
     tick: function tick() {},
     remove: function remove() {},
     pause: function pause() {},
@@ -2115,6 +2118,7 @@ AFRAME.registerPrimitive('a-gui-progressbar', {
         'width': 'gui-item.width',
         'height': 'gui-item.height',
         'margin': 'gui-item.margin',
+        'progress': 'gui-progressbar.progress',
         'background-color': 'gui-progressbar.backgroundColor',
         'active-color': 'gui-progressbar.activeColor'
     }
@@ -2662,7 +2666,7 @@ AFRAME.registerComponent('gui-toggle', {
         });
 
         el.addEventListener(data.on, function (evt) {
-            console.log('I was clicked at: ', evt.detail.intersection.point);
+            //console.log('I was clicked at: ', evt.detail.intersection.point);
             data.checked = !data.checked;
             if (data.checked) {
                 toggleBox.removeAttribute('animation__colorOut');
@@ -2676,9 +2680,9 @@ AFRAME.registerComponent('gui-toggle', {
                 toggleHandle.setAttribute('animation__positionOut', 'property: position; from: ' + toggleHandleXEnd + ' 0 0.02; to:' + toggleHandleXStart + ' 0 0.02; dur:200; easing:easeInOutCubic;');
             }
             var guiInteractable = el.getAttribute("gui-interactable");
-            console.log("guiInteractable: " + guiInteractable);
+            //console.log("guiInteractable: " + guiInteractable);
             var clickActionFunctionName = guiInteractable.clickAction;
-            console.log("clickActionFunctionName: " + clickActionFunctionName);
+            //console.log("clickActionFunctionName: " + clickActionFunctionName);
             // find object
             var clickActionFunction = window[clickActionFunctionName];
             //console.log("clickActionFunction: "+clickActionFunction);

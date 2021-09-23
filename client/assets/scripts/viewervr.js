@@ -43,28 +43,6 @@ function init() {
 
 }
 
-
-async function getStream() {
-  const audioSource = audioSelect.value;
-  const constraints = {
-    audio: { deviceId: audioSource ? { exact: audioSource } : undefined, echoCancellation: true },
-    video: false
-  };
-  try {
-    const stream = await navigator.mediaDevices.getUserMedia(constraints);
-    return gotStream(stream);
-  }
-  catch (error) {
-    return handleError(error);
-  }
-}
-
-function gotStream(stream) {
-  audioStream = stream;
-  socket.emit("broadcaster");
-} 
-
-
 function toggleMute() {
   
   var audioTracks = window.stream.getAudioTracks();
